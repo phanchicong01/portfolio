@@ -1,36 +1,52 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Phan Chi Cong — Portfolio
 
-## Getting Started
+A one-page personal portfolio for a Senior Frontend Developer. Clean, dark-mode-first, built around a "trading terminal" visual identity that reflects the fintech / e-commerce / admin-systems work it showcases.
 
-First, run the development server:
+## Tech stack
+
+- **Next.js 16** (App Router) + **React 19** + **TypeScript**
+- **Tailwind CSS v4** (CSS-first tokens in `globals.css`)
+- **shadcn/ui-style primitives** (Button, Card, Badge, Input, Textarea, Separator, Sheet) on Radix UI
+- **Framer Motion** — subtle scroll reveals + project filter transitions
+- **Lucide React** — icons
+- **React Hook Form + Zod** — contact form validation
+- **next-themes** — dark/light toggle
+
+## Getting started
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev      # http://localhost:3000
+npm run build    # production build
+npm run lint
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Structure
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```
+src/
+  app/              layout.tsx (SEO + fonts), page.tsx, globals.css (design tokens)
+  components/
+    layout/         navbar, footer
+    sections/       hero, about, skills, projects, experience, services, contact
+    ui/             reusable primitives + SectionHeading, ProjectCard, SkillBadge,
+                    ExperienceTimeline, Container, Reveal
+    theme-*.tsx     theme provider + toggle
+    contact-form.tsx, copy-email-button.tsx, back-to-top.tsx
+  data/             profile, skills, projects, experience, services  (all content lives here)
+  lib/utils.ts      cn() helper
+public/
+  Phan_Chi_Cong_CV.pdf   <- placeholder; replace with the real CV
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+All copy lives in `src/data/*` — edit those files to update content, no component changes needed.
 
-## Learn More
+## Things to wire up
 
-To learn more about Next.js, take a look at the following resources:
+- **CV** — replace `public/Phan_Chi_Cong_CV.pdf` with the real file (same name, or update `cvPath` in `src/data/profile.ts`).
+- **Contact form** — currently UI-only. It validates and simulates a send. To make it deliver mail, see the `TODO` in `src/components/contact-form.tsx` (options: an `/api/contact` route handler calling Resend, EmailJS client-side, or a form backend like Formspree).
+- **Domain** — update `siteUrl` in `src/app/layout.tsx` for correct Open Graph / canonical URLs.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Deploy
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Vercel-ready: push to a Git repo and import, or run `vercel`. No env vars required for the static build.
