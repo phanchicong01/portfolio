@@ -4,9 +4,11 @@ import { useSyncExternalStore } from "react";
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
+import { useLocale } from "@/lib/locale";
 
 export function ThemeToggle() {
   const { resolvedTheme, setTheme } = useTheme();
+  const { locale } = useLocale();
   const mounted = useSyncExternalStore(
     () => () => {},
     () => true,
@@ -19,7 +21,15 @@ export function ThemeToggle() {
     <Button
       variant="ghost"
       size="icon"
-      aria-label={mounted ? `Switch to ${isDark ? "light" : "dark"} mode` : "Toggle theme"}
+      aria-label={
+        mounted
+          ? locale === "vi"
+            ? `Chuyển sang chế độ ${isDark ? "sáng" : "tối"}`
+            : `Switch to ${isDark ? "light" : "dark"} mode`
+          : locale === "vi"
+            ? "Đổi giao diện sáng tối"
+            : "Toggle theme"
+      }
       onClick={() => setTheme(isDark ? "light" : "dark")}
       className="text-[var(--color-fg-muted)]"
     >

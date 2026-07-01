@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { ArrowRight, Download, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { PaletteToggle } from "@/components/palette-toggle";
 import { Container } from "@/components/ui/container";
 import { Reveal } from "@/components/ui/reveal";
 import { profile } from "@/data/profile";
@@ -74,6 +75,15 @@ export function HeroSection() {
             </Reveal>
 
             <Reveal delay={0.24}>
+              <div className="mt-6 flex flex-wrap items-center gap-3">
+                <p className="editorial-kicker text-[var(--color-fg-subtle)]">
+                  {locale === "vi" ? "Bảng màu" : "Palette"}
+                </p>
+                <PaletteToggle />
+              </div>
+            </Reveal>
+
+            <Reveal delay={0.3}>
               <ul className="mt-12 flex flex-wrap gap-x-7 gap-y-3">
                 {profile.heroBadges.map((badge) => (
                   <li

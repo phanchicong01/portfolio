@@ -1,11 +1,13 @@
 "use client";
 
+import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import type { LocalizedText } from "@/lib/locale";
 import { t, useLocale } from "@/lib/locale";
 import { cn } from "@/lib/utils";
 
 interface ProjectCardProps {
+  slug: string;
   name: LocalizedText;
   category: LocalizedText;
   description: LocalizedText;
@@ -18,6 +20,7 @@ interface ProjectCardProps {
 }
 
 export function ProjectCard({
+  slug,
   name,
   category,
   description,
@@ -98,6 +101,19 @@ export function ProjectCard({
               </li>
             ))}
           </ul>
+        </div>
+
+        <div className="mt-6 flex items-center justify-between gap-3 border-t border-[var(--color-line)] pt-5">
+          <p className="text-sm text-[var(--color-fg-subtle)]">
+            {locale === "vi" ? "Xem cách tôi triển khai bài toán này" : "See how I approached this system"}
+          </p>
+          <Link
+            href={`/projects/${slug}`}
+            className="inline-flex items-center gap-2 rounded-full border border-[var(--color-line-strong)] px-3.5 py-2 text-sm text-[var(--color-fg)] transition-colors hover:border-[var(--color-signal-dim)] hover:text-[var(--color-signal)]"
+          >
+            {locale === "vi" ? "Case study" : "Case study"}
+            <ArrowUpRight className="size-4" />
+          </Link>
         </div>
       </div>
     </article>

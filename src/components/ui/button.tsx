@@ -9,7 +9,7 @@ const buttonVariants = cva(
     variants: {
       variant: {
         primary:
-          "bg-[var(--color-signal)] text-[#06110b] hover:-translate-y-0.5 hover:bg-[color-mix(in_oklab,var(--color-signal)_88%,white)] hover:shadow-[0_22px_38px_-22px_rgba(104,240,168,0.58)] font-semibold",
+          "bg-[var(--color-signal)] text-[var(--color-accent-contrast)] hover:-translate-y-0.5 hover:bg-[color-mix(in_oklab,var(--color-signal)_88%,white)] hover:shadow-[0_22px_38px_-22px_var(--color-signal-shadow)] font-semibold",
         outline:
           "border border-[var(--color-line-strong)] bg-[rgba(255,255,255,0.02)] text-[var(--color-fg)] hover:-translate-y-0.5 hover:bg-[var(--color-panel-2)] hover:border-[var(--color-signal-dim)]",
         ghost:

@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Menu } from "lucide-react";
+import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetClose, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { LanguageToggle } from "@/components/language-toggle";
@@ -15,6 +16,10 @@ import { cn } from "@/lib/utils";
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const { locale } = useLocale();
+  const pathname = usePathname();
+
+  const sectionHref = (href: string) => (pathname === "/" ? href : `/${href}`);
+  const homeHref = pathname === "/" ? "#top" : "/";
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 16);
@@ -36,7 +41,7 @@ export function Navbar() {
           )}
         >
           <Link
-            href="#top"
+            href={homeHref}
             className="flex items-center gap-3 rounded-full px-2 py-1 transition-colors hover:text-[var(--color-signal)]"
           >
             <span className="editorial-kicker text-[var(--color-fg-subtle)]">PC</span>
@@ -49,7 +54,7 @@ export function Navbar() {
             {navLinks.map((link) => (
               <Link
                 key={link.href}
-                href={link.href}
+                href={sectionHref(link.href)}
                 className="rounded-full px-2.5 py-2 text-sm text-[var(--color-fg-muted)] transition-colors hover:text-[var(--color-fg)]"
               >
                 {t(locale, link.label)}
@@ -61,7 +66,7 @@ export function Navbar() {
             <LanguageToggle />
             <ThemeToggle />
             <Button asChild size="sm" className="px-4">
-              <Link href="#contact">
+              <Link href={sectionHref("#contact")}>
                 {locale === "vi" ? "Trao đổi với tôi" : "Start a conversation"}
               </Link>
             </Button>
@@ -90,7 +95,7 @@ export function Navbar() {
                   {navLinks.map((link) => (
                     <SheetClose asChild key={link.href}>
                       <Link
-                        href={link.href}
+                        href={sectionHref(link.href)}
                         className="rounded-2xl px-4 py-3 text-base text-[var(--color-fg-muted)] transition-colors hover:bg-[var(--color-panel-2)] hover:text-[var(--color-fg)]"
                       >
                         {t(locale, link.label)}
@@ -100,7 +105,7 @@ export function Navbar() {
                 </div>
                 <SheetClose asChild>
                   <Button asChild className="mt-6 w-full">
-                    <Link href="#contact">
+                    <Link href={sectionHref("#contact")}>
                       {locale === "vi" ? "Trao đổi với tôi" : "Start a conversation"}
                     </Link>
                   </Button>

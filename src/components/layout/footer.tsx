@@ -1,12 +1,15 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Container } from "@/components/ui/container";
 import { navLinks, profile } from "@/data/profile";
 import { t, useLocale } from "@/lib/locale";
 
 export function Footer() {
   const { locale } = useLocale();
+  const pathname = usePathname();
+  const sectionHref = (href: string) => (pathname === "/" ? href : `/${href}`);
 
   return (
     <footer className="border-t border-[var(--color-line)] py-10">
@@ -25,7 +28,7 @@ export function Footer() {
               {navLinks.filter((link) => link.href !== "#skills").map((link) => (
                 <Link
                   key={link.href}
-                  href={link.href}
+                  href={sectionHref(link.href)}
                   className="text-sm text-[var(--color-fg-muted)] transition-colors hover:text-[var(--color-fg)]"
                 >
                   {t(locale, link.label)}

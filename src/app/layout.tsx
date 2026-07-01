@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Geist_Mono, Outfit } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
+import { AccentThemeProvider } from "@/lib/color-theme";
 import { LocaleProvider } from "@/lib/locale";
 
 const outfit = Outfit({
@@ -61,7 +62,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning data-accent="forest">
       <body className={`${outfit.variable} ${geistMono.variable} antialiased`}>
         <a
           href="#main-content"
@@ -75,7 +76,9 @@ export default function RootLayout({
           enableSystem={false}
           disableTransitionOnChange
         >
-          <LocaleProvider>{children}</LocaleProvider>
+          <AccentThemeProvider>
+            <LocaleProvider>{children}</LocaleProvider>
+          </AccentThemeProvider>
         </ThemeProvider>
       </body>
     </html>

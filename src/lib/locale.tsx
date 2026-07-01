@@ -5,7 +5,7 @@ import {
   useContext,
   useEffect,
   useMemo,
-  useState,
+  useSyncExternalStore,
   type ReactNode,
 } from "react";
 
@@ -19,22 +19,51 @@ interface LocaleContextValue {
 }
 
 const STORAGE_KEY = "portfolio-locale";
+const LOCALE_EVENT = "portfolio-locale-change";
 
 const LocaleContext = createContext<LocaleContextValue | null>(null);
 
-export function LocaleProvider({ children }: { children: ReactNode }) {
-  const [locale, setLocale] = useState<Locale>(() => {
-    if (typeof window === "undefined") {
-      return "en";
+function getLocaleSnapshot(): Locale {
+  if (typeof window === "undefined") {
+    return "en";
+  }
+
+  const saved = window.localStorage.getItem(STORAGE_KEY);
+  return saved === "vi" || saved === "en" ? saved : "en";
+}
+
+function subscribeToLocale(callback: () => void) {
+  if (typeof window === "undefined") {
+    return () => {};
+  }
+
+  const handleStorage = (event: Event) => {
+    if (event instanceof StorageEvent && event.key && event.key !== STORAGE_KEY) {
+      return;
     }
 
-    const saved = window.localStorage.getItem(STORAGE_KEY);
-    return saved === "vi" || saved === "en" ? saved : "en";
-  });
+    callback();
+  };
+
+  window.addEventListener("storage", handleStorage);
+  window.addEventListener(LOCALE_EVENT, callback);
+
+  return () => {
+    window.removeEventListener("storage", handleStorage);
+    window.removeEventListener(LOCALE_EVENT, callback);
+  };
+}
+
+export function LocaleProvider({ children }: { children: ReactNode }) {
+  const locale = useSyncExternalStore(subscribeToLocale, getLocaleSnapshot, () => "en");
+
+  const setLocale = (nextLocale: Locale) => {
+    window.localStorage.setItem(STORAGE_KEY, nextLocale);
+    window.dispatchEvent(new Event(LOCALE_EVENT));
+  };
 
   useEffect(() => {
     document.documentElement.lang = locale;
-    window.localStorage.setItem(STORAGE_KEY, locale);
   }, [locale]);
 
   const value = useMemo(() => ({ locale, setLocale }), [locale]);

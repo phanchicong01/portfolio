@@ -35,7 +35,7 @@ export function LanguageToggle({ className }: { className?: string }) {
             className={cn(
               "h-8 min-w-11 px-3 text-[11px] font-semibold tracking-[0.16em]",
               active
-                ? "bg-[var(--color-signal)] text-[#06110b] hover:bg-[var(--color-signal)] hover:text-[#06110b]"
+                ? "bg-[var(--color-signal)] text-[var(--color-accent-contrast)] hover:bg-[var(--color-signal)] hover:text-[var(--color-accent-contrast)]"
                 : "text-[var(--color-fg-subtle)] hover:text-[var(--color-fg)]"
             )}
           >
